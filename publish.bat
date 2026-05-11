@@ -1,18 +1,17 @@
 @echo off
-chcp 65001 >nul
 title Publication Jazair
 cd /d "%~dp0"
 
 echo.
-echo ════════════════════════════════════════
+echo ====================================
 echo   Publication du site Jazair
-echo ════════════════════════════════════════
+echo ====================================
 echo.
 
 if not exist "%USERPROFILE%\Downloads\data.json" (
   echo [ERREUR] Aucun data.json trouve dans Downloads.
   echo.
-  echo Va d'abord sur le CMS, clique "Telecharger data.json"
+  echo Va d'abord sur le CMS, clique "Publier"
   echo puis relance ce script.
   echo.
   pause
@@ -53,9 +52,9 @@ if errorlevel 1 (
 )
 
 echo.
-echo ════════════════════════════════════════
-echo   ✓ Publie ! Site mis a jour dans 1-2 min
-echo ════════════════════════════════════════
+echo ====================================
+echo   OK Publie ! Site mis a jour dans 1-2 min
+echo ====================================
 echo.
 echo Tu peux fermer cette fenetre.
 echo.
