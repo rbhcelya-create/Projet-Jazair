@@ -333,7 +333,10 @@ async function loadDataFromSources() {
 function saveLocal() {
   if (!DATA) return;
   try { localStorage.setItem('jazair_data', JSON.stringify(DATA)); }
-  catch(e) { console.error('localStorage save failed:', e); }
+  catch(e) {
+    // Quota dépassé (images base64 lourdes) — les modifs restent en session mais
+    // seront perdues au refresh tant qu'on n'a pas Publié sur GitHub.
+  }
 }
 
 function clearLocalData() {
