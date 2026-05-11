@@ -8,26 +8,34 @@ echo   Publication du site Jazair
 echo ====================================
 echo.
 
-if not exist "%USERPROFILE%\Downloads\data.json" (
-  echo [ERREUR] Aucun data.json trouve dans Downloads.
+REM Trouve le data*.json le plus recent dans Downloads
+set "LATEST="
+for /f "delims=" %%F in ('dir /b /o-d /a-d "%USERPROFILE%\Downloads\data*.json" 2^>nul') do (
+  if not defined LATEST set "LATEST=%USERPROFILE%\Downloads\%%F"
+)
+
+if not defined LATEST (
+  echo [ERREUR] Aucun data*.json trouve dans Downloads.
   echo.
-  echo Va d'abord sur le CMS, clique "Publier"
-  echo puis relance ce script.
+  echo Va sur le CMS et clique "Publier" d'abord.
   echo.
   pause
   exit /b 1
 )
 
-echo Copie de data.json depuis Downloads...
-copy /Y "%USERPROFILE%\Downloads\data.json" "data.json" >nul
+echo Fichier le plus recent : %LATEST%
+echo Copie vers le projet...
+copy /Y "%LATEST%" "data.json" >nul
 
 echo Verification des changements...
 git diff --quiet data.json
 if %errorlevel%==0 (
   echo.
-  echo [INFO] Aucun changement detecte dans data.json.
+  echo [INFO] Aucun changement par rapport au site en ligne.
   echo Le site est deja a jour.
   echo.
+  echo Nettoyage des anciens telechargements...
+  del /Q "%USERPROFILE%\Downloads\data*.json" 2>nul
   pause
   exit /b 0
 )
@@ -50,6 +58,10 @@ if errorlevel 1 (
   pause
   exit /b 1
 )
+
+echo.
+echo Nettoyage des anciens telechargements...
+del /Q "%USERPROFILE%\Downloads\data*.json" 2>nul
 
 echo.
 echo ====================================
