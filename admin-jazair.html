@@ -162,11 +162,12 @@ body{background:var(--dark);color:var(--text);font-family:'Barlow',sans-serif;mi
     </div>
   </div>
   <div class="sidebar-footer">
-    <button class="export-btn" onclick="publishToGitHub()" title="Publier vers le site en ligne">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l5 5L20 7"/></svg>
+    <button class="export-btn" onclick="downloadAndInstruct()" title="Télécharge data.json puis double-clique publish.bat">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
       Publier
     </button>
-    <button onclick="clearLocalData()" title="Effacer les modifs locales et recharger depuis le site" style="width:100%;margin-top:.5rem;background:transparent;color:var(--muted);border:1px solid var(--border);padding:.4rem;font-family:'Barlow',sans-serif;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer">↻ Recharger</button>
+    <button onclick="publishToGitHub()" title="Publication directe via GitHub API (nécessite un Personal Access Token)" style="width:100%;margin-top:.5rem;background:transparent;color:var(--muted);border:1px solid var(--border);padding:.4rem;font-family:'Barlow',sans-serif;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer">⚡ Publier via API (token)</button>
+    <button onclick="clearLocalData()" title="Effacer les modifs locales et recharger depuis le site" style="width:100%;margin-top:.5rem;background:transparent;color:var(--muted);border:1px solid var(--border);padding:.4rem;font-family:'Barlow',sans-serif;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer">↻ Recharger depuis le site</button>
   </div>
 </div>
 
@@ -768,6 +769,21 @@ function exportSite() {
   a.download = 'data.json';
   a.click();
   showToast('✓ data.json téléchargé');
+}
+
+function downloadAndInstruct() {
+  if (!DATA) { showToast('⚠ Aucune donnée à publier'); return; }
+  exportSite();
+  setTimeout(() => {
+    alert(
+      "✓ data.json téléchargé dans ton dossier Downloads.\n\n" +
+      "Pour publier sur le site :\n" +
+      "1. Va dans le dossier du projet (Bureau > Projet Jazair > Jazair build)\n" +
+      "2. Double-clique sur \"publish.bat\"\n" +
+      "3. Une fenêtre noire s'ouvre et fait le push automatiquement\n" +
+      "4. Site mis à jour dans 1-2 min ✨"
+    );
+  }, 400);
 }
 
 // ══ INIT ══
